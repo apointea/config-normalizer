@@ -1,0 +1,11 @@
+# --- PATTERN EXAMPLE --- #
+
+# REQUIRED CONFIG         #
+direction: H                                    # String == `H` || `V`
+length: 4                                       # Integer > 0
+margin: 1                                       # Integer >= 0
+
+# OPTIONNAL CONFIG        #
+n-repeat: 0                                     # Integer > 0  (0 == disabled)
+max-repeat: 0                                   # Integer > 0  (0 == disabled)
+min-repeat: 0                                   # Integer > 0  (0 == disabled)
