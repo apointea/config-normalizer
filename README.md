@@ -1,1 +1,1 @@
-# config-template
+# Config Normalizer
