@@ -1,21 +1,17 @@
-import os
 import yaml
-
-from .data_structure.model import *
+from .UCModel import *
 
 class uniformConfig:
 
-    def __init__(self, modelsDir, patternsDir):
-        self.modelsDir = modelsDir
-        self.patternsDir = patternsDir
+    def __init__(self):
         self.container = False
 
-    def loadModel(self, fileName):
-        self.container = model(fileName, self.modelsDir).build()
+    def loadModel(self, filePath):
+        self.container = UCModel(filePath).build()
 
     #def loadData(self, filePath):
 
     def export(self, filePath):
         stream = open(filePath, 'w')
         res = self.container.export()
-        stream.write(yaml.dump(res))
+        yaml.dump(res, stream, default_flow_style=False)

@@ -1,4 +1,0 @@
-firstname: ''
-lastname:
-location: { command: include, path: modules.location }
-#hobbies: { command: pattern, path: hobbie }
