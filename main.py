@@ -41,10 +41,7 @@ def main():
     opts, args = parseArguments()
 
     # INIT                      #
-    UC = uniformConfig()
-
-    # LOAD model                #
-    UC.loadModel(opts.model)
+    UC = uniformConfig(opts.model)
 
     # EXPORT config             #
     UC.export(opts.output)

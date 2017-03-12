@@ -34,9 +34,8 @@ class UCModel:
             return self.__pattern(data)
         raise ValueError('Uniform Config - Invalid model, unknown command: "%s".' % data['command'])
 
-
     def __include(self, data):
-        if 'path' in data:
+        if self.data[prop].get('path', False):
             return UCModel(os.path.join(self.dirname, data['path'])).build()
         raise UCExceptionAttr('IN FILE [' + self.filePath + '] : include command require `path` field')
 

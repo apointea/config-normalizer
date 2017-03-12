@@ -3,13 +3,9 @@ from .UCModel import *
 
 class uniformConfig:
 
-    def __init__(self):
+    def __init__(self, filePath):
         self.container = False
-
-    def loadModel(self, filePath):
         self.container = UCModel(filePath).build()
-
-    #def loadData(self, filePath):
 
     def export(self, filePath):
         stream = open(filePath, 'w')
