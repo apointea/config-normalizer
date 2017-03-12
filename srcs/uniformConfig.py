@@ -5,7 +5,7 @@ class uniformConfig:
 
     def __init__(self, filePath):
         self.container = False
-        self.container = UCModel(filePath).build()
+        self.container = UCModel(filePath)
 
     def export(self, filePath):
         stream = open(filePath, 'w')
