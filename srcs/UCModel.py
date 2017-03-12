@@ -15,7 +15,7 @@ class UCModel:
 
     def build(self):
         for prop in self.data:
-            if isinstance(self.data[prop], dict) and 'command' in self.data:
+            if isinstance(self.data[prop], dict) and self.data[prop].get('command', False):
                 self.data[prop] = self.__command(self.data[prop])
             else:
                 self.data[prop] = UCField(self.data[prop])
@@ -32,13 +32,13 @@ class UCModel:
             return self.__include(data)
         elif data['command'] == 'pattern':
             return self.__pattern(data)
-        raise ValueError('') # TODO Handle
+        raise ValueError('Uniform Config - Invalid model, unknown command: "%s".' % data['command'])
 
 
     def __include(self, data):
         if 'path' in data:
-            return model(os.path.join(self.dirname, data['path'])).build()
-        raise UC_ExpectAttrException('IN FILE [' + self.filePath + '] : include command require `path` field')
+            return UCModel(os.path.join(self.dirname, data['path'])).build()
+        raise UCExceptionAttr('IN FILE [' + self.filePath + '] : include command require `path` field')
 
     def __pattern(self, data):
-        raise UC_ExpectAttrException('IN FILE [' + self.filePath + '] : include command require `path` field')
+        raise UCExceptionAttr('IN FILE [' + self.filePath + '] : include command require `path` field')

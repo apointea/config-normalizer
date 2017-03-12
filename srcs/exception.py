@@ -1,2 +1,2 @@
-class UC_ExpectAttrException(Exception):
+class UCExceptionAttr(Exception):
     pass
