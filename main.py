@@ -43,6 +43,10 @@ def main():
     # INIT                      #
     UC = uniformConfig(opts.model)
 
+    while(42):
+        l = sys.stdin.readline()
+        print UC.get(l[:-1])
+
     # EXPORT config             #
     UC.export(opts.output)
 

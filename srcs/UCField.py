@@ -1,3 +1,5 @@
+from .UCException import *
+
 from .validators.UCEmail import *
 from .validators.UCInteger import *
 from .validators.UCIPv4 import *
@@ -13,10 +15,16 @@ class UCField:
         else:
             self.value = data
 
-    def setValue(self, newValue):
+
+    def get(self, key):
+        if len(key):
+            raise UCExceptionInvalidKey()
+        return self.value
+
+    def set(self, value):
         if self.validator:
-            self.value = self.validator.check(newValue)
-        self.value = newValue
+            self.value = self.validator.check(value)
+        self.value = value
 
     def export(self):
         return (self.value)
@@ -35,4 +43,4 @@ class UCField:
 
         # SET default value (use validator if set)
         if 'default' in data:
-            self.setValue(data['default'])
+            self.set(data['default'])

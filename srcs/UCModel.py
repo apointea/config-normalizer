@@ -1,43 +1,49 @@
 import os
 import yaml
 
+from .UCException import *
+from .UCCommon import *
 from .UCField import *
-from .exception import *
+from .UCPattern import *
 
-class UCModel:
+class UCModel(UCCommon):
 
-    def __init__(self, filePath):
-        self.filePath = filePath
-        if not self.filePath.endswith('.yml'):
-            self.filePath = self.filePath + '.yml'
-        self.dirname = os.path.dirname(self.filePath)
+    def __init__(self, filePath, config=False):
+        self.filePath = self.checkFilePath(filePath)
+        self.dirName = os.path.dirname(self.filePath)
         self.data = yaml.load(open(self.filePath, 'r'))
-        self.__buildSchema()
+        self.__build()
 
-    def __buildSchema(self):
+    def __build(self):
         for prop in self.data:
             if isinstance(self.data[prop], dict) and self.data[prop].get('command', False):
-                self.data[prop] = self.__commandPropertyss(self.data[prop])
+                self.data[prop] = self.__commandRouter(prop)
             else:
                 self.data[prop] = UCField(self.data[prop])
-        return (self)
 
-    def __commandProperty(self, data):
-        if data['command'] == 'include':
-            return self.__includeCommand(data)
-        elif data['command'] == 'pattern':
-            return self.__patternCommand(data)
-        raise ValueError('Uniform Config - Invalid model, unknown command: "%s".' % data['command'])
+    def __commandRouter(self, prop):
+        if self.data[prop]['command'] == 'include':
+            return self.__commandInclude(prop)
+        elif self.data[prop]['command'] == 'pattern':
+            return self.__commandPattern(prop)
+        raise UCExceptionModelSyntax('Unknown command: "%s"' % self.data[prop]['command'])
 
-    def __includeCommand(self, data):
+    def __commandInclude(self, prop):
         if self.data[prop].get('path', False):
-            return UCModel(os.path.join(self.dirname, data['path']))
-        raise UCExceptionAttr('IN FILE [' + self.filePath + '] : include command require `path` field')
+            fpath = os.path.join(self.dirName, self.data[prop]['path'])
+            return UCModel(fpath, self.data[prop])
+        raise UCExceptionModelNoPath('No path param for the include command : %s' % prop)
 
-    def __patternCommand(self, data):
+    def __commandPattern(self, prop):
         if self.data[prop].get('path', False):
-            return UCPattern(os.path.join(self.dirname, data['path']))
-        raise UCExceptionAttr('IN FILE [' + self.filePath + '] : include command require `path` field')
+            fpath = os.path.join(self.dirName, self.data[prop]['path'])
+            return UCPattern(fpath, self.data[prop])
+        raise UCExceptionModelNoPath('No path param for the pattern command : %s' % prop)
+
+    def get(self, key):
+        if not len(key):
+            return self
+        return self.data[key[0]].get(key[1:])
 
     def export(self):
         res = {}
