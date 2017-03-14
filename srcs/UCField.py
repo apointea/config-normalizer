@@ -18,10 +18,12 @@ class UCField:
 
     def get(self, key):
         if len(key):
-            raise UCExceptionInvalidKey()
+            raise UCException()
         return self.value
 
-    def set(self, value):
+    def set(self, key, value):
+        if len(key):
+            raise UCException()
         if self.validator:
             self.value = self.validator.check(value)
         self.value = value
@@ -43,4 +45,4 @@ class UCField:
 
         # SET default value (use validator if set)
         if 'default' in data:
-            self.set(data['default'])
+            self.set([], data['default'])

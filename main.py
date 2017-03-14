@@ -13,11 +13,11 @@ def parseArguments():
     modelsDir = os.path.join(exampleDir, 'models')
     patternsDir = os.path.join(exampleDir, 'patterns')
 
-    usage = "USAGE: %prog [options] -o FILE"
+    usage = "USAGE: %prog [options]"
     parser = OptionParser(usage=usage)
     parser.add_option(
         '-m', '--model', metavar = 'NAME',
-        action = 'store', dest = 'model', default = 'example/layout',
+        action = 'store', dest = 'model', default = 'example/layout.yml',
         help = 'Set the configuration model to use (default: layout.yml)',
     )
     parser.add_option(
@@ -27,8 +27,8 @@ def parseArguments():
     )
     parser.add_option(
         '-o', '--output-file', metavar = 'FILE',
-        action = 'store', dest = 'output',
-        help = 'Set the output file name, if no input-file, it produce the nominal prototype of the model (required)',
+        action = 'store', dest = 'output', default = 'out.yml',
+        help = 'Set the output file name, if no input-file, it produce the nominal prototype of the model (default: out.yml)',
     )
     (options, args) = parser.parse_args()
     if not options.output:
@@ -43,11 +43,11 @@ def main():
     # INIT                      #
     UC = uniformConfig(opts.model)
 
-    while(42):
-        l = sys.stdin.readline()
-        print UC.get(l[:-1])
+    UC.joinModel('example/addon')
 
-    # EXPORT config             #
+    UC.fill
+
+    # EXPORT                    #
     UC.export(opts.output)
 
 if (__name__ == '__main__'):

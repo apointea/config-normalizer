@@ -1,5 +1,7 @@
 import os
 
+from .UCException import *
+
 class UCCommon:
 
     def checkFilePath(self, filePath):
@@ -7,4 +9,4 @@ class UCCommon:
             return (filePath)
         if not filePath.endswith(".yml"):
             return self.checkFilePath(filePath + ".yml")
-        raise UCExceptionFileNotFound("File not found : %s." % filePath)
+        raise UCException("file not found : '%s'" % filePath)

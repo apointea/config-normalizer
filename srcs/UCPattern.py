@@ -3,7 +3,7 @@ import yaml
 
 from .UCException import *
 from .UCCommon import *
-from UCField import *
+from .UCField import *
 
 class UCPattern(UCCommon):
 

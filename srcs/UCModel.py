@@ -26,24 +26,29 @@ class UCModel(UCCommon):
             return self.__commandInclude(prop)
         elif self.data[prop]['command'] == 'pattern':
             return self.__commandPattern(prop)
-        raise UCExceptionModelSyntax('Unknown command: "%s"' % self.data[prop]['command'])
+        raise UCException("unknown command: '%s'" % self.data[prop]['command'])
 
     def __commandInclude(self, prop):
         if self.data[prop].get('path', False):
             fpath = os.path.join(self.dirName, self.data[prop]['path'])
             return UCModel(fpath, self.data[prop])
-        raise UCExceptionModelNoPath('No path param for the include command : %s' % prop)
+        raise UCException("include, path param. not found : '%s'" % prop)
 
     def __commandPattern(self, prop):
         if self.data[prop].get('path', False):
             fpath = os.path.join(self.dirName, self.data[prop]['path'])
             return UCPattern(fpath, self.data[prop])
-        raise UCExceptionModelNoPath('No path param for the pattern command : %s' % prop)
+        raise UCException("pattern, path param. not found : '%s'" % prop)
 
     def get(self, key):
         if not len(key):
-            return self
+            raise UCException()
         return self.data[key[0]].get(key[1:])
+
+    def set(self, key, value):
+        if not len(key):
+            raise UCException()
+        self.data[key[0]].set(key[1:], value)
 
     def export(self):
         res = {}
