@@ -8,7 +8,7 @@ from .UCField import *
 class UCPattern(UCCommon):
 
     def __init__(self, filePath, config={}):
-        self.filePath = self.checkFilePath(filePath)
+        self.filePath = self.openYaml(filePath)
         self.dirName = os.path.dirname(self.filePath)
         self.data = yaml.load(open(self.filePath, 'r'))
         self.__config(config)

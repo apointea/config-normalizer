@@ -43,9 +43,7 @@ def main():
     # INIT                      #
     UC = uniformConfig(opts.model)
 
-    UC.joinModel('example/addon')
-
-    UC.fill
+    UC.addModel('example/addon')
 
     # EXPORT                    #
     UC.export(opts.output)

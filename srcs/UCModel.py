@@ -8,37 +8,40 @@ from .UCPattern import *
 
 class UCModel(UCCommon):
 
-    def __init__(self, filePath, config=False):
-        self.filePath = self.checkFilePath(filePath)
+    def __init__(self, filePath, conf):
+        self.conf = conf
+        self.filePath = self.openYaml(filePath)
         self.dirName = os.path.dirname(self.filePath)
-        self.data = yaml.load(open(self.filePath, 'r'))
+        self.fileData = yaml.load(open(self.filePath, 'r'))
         self.__build()
 
     def __build(self):
-        for prop in self.data:
-            if isinstance(self.data[prop], dict) and self.data[prop].get('command', False):
-                self.data[prop] = self.__commandRouter(prop)
+        self.data = {}
+        for field in self.fileData:
+            cnt = self.fileData[field]
+            if isinstance(cnt, dict) and cnt.get('command', False):
+                self.data[field] = self.__commandRouter(cnt, field)
             else:
-                self.data[prop] = UCField(self.data[prop])
+                self.data[field] = UCField(cnt, field, self.conf)
 
-    def __commandRouter(self, prop):
-        if self.data[prop]['command'] == 'include':
-            return self.__commandInclude(prop)
-        elif self.data[prop]['command'] == 'pattern':
-            return self.__commandPattern(prop)
-        raise UCException("unknown command: '%s'" % self.data[prop]['command'])
+    def __commandRouter(self, cnt, field):
+        if cnt['command'] == 'include':
+            return self.__commandInclude(cnt, field)
+        elif cnt['command'] == 'pattern':
+            return self.__commandPattern(cnt, field)
+        raise UCException("unknown command: '%s'" % cnt['command'])
 
-    def __commandInclude(self, prop):
-        if self.data[prop].get('path', False):
-            fpath = os.path.join(self.dirName, self.data[prop]['path'])
-            return UCModel(fpath, self.data[prop])
-        raise UCException("include, path param. not found : '%s'" % prop)
+    def __commandInclude(self, cnt, field):
+        if cnt.get('path', False):
+            fpath = os.path.join(self.dirName, cnt['path'])
+            return UCModel(fpath, self.conf)
+        raise UCException("include, path param. not found : '%s'" % field)
 
-    def __commandPattern(self, prop):
-        if self.data[prop].get('path', False):
-            fpath = os.path.join(self.dirName, self.data[prop]['path'])
-            return UCPattern(fpath, self.data[prop])
-        raise UCException("pattern, path param. not found : '%s'" % prop)
+    def __commandPattern(self, cnt, field):
+        if cnt.get('path', False):
+            fpath = os.path.join(self.dirName, cnt['path'])
+            return UCPattern(fpath, self.conf)
+        raise UCException("pattern, path param. not found : '%s'" % field)
 
     def get(self, key):
         if not len(key):

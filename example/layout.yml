@@ -1,8 +1,23 @@
 firstName: ''
 lastName: ''
-age: { validate: integer, min: 0, max: 150, default: 10,  }
-email: { validate: email, default: example@example.com }
-phone: { validate: regex, pattern: '([0-9]{2}[\. ]?){4}[0-9]{2}', default: 06.00.00.00.00 }
-ip: { validate: IPv4, default: 127.0.0.1 }
+age: {
+    validator: { name: integer, min: 0, max: 12 },
+    default: 15
+}
+email: {
+    validator: { name: email },
+    default: example@example.com
+}
+phone: {
+    validator: {
+        name:  regex,
+        pattern: '([0-9]{2}[\. ]?){4}[0-9]{2}',
+    },
+    default: 00.00.00.00.00
+}
+ip: {
+    validator: { name: IPv4 },
+    default: 127.0.0.1
+}
 location: { command: include, path: modules/location }
 #hobbies: { command: pattern, path: modules/hobbie }

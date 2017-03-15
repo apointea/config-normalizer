@@ -1,31 +1,38 @@
 from .UCException import *
-
-from .validators.UCEmail import *
-from .validators.UCInteger import *
-from .validators.UCIPv4 import *
-from .validators.UCRegex import *
+from .validators.UCValidatorFactory import *
 
 class UCField:
 
-    def __init__(self, data):
-        self.value = ''
-        self.validator = False
-        if isinstance(data, dict):
-            self.__initDict(data)
+    def __init__(self, specs, field, conf):
+        self.field = field
+        self.conf = conf
+        self.validators = []
+        if isinstance(specs, dict):
+            self.__initValidators(specs)
+            self.set(specs.get("default", ""))
         else:
-            self.value = data
+            self.set(specs)
 
+    vProperties = ["v", "validator", "validators"]
+    def __initValidators(self, specs):
+        for prop in self.vProperties: # GET VALIDATOR SPECS
+            if prop in specs:
+                vSpecs = specs[prop]
+                try:
+                    vInsts = UCValidatorFactory.buildArray(vSpecs)
+                    self.validators += vInsts
+                except Exception as e:
+                    raise UCException("in field '%s' - %s" % (self.field, str(e)))
 
     def get(self, key):
         if len(key):
             raise UCException()
         return self.value
 
-    def set(self, key, value):
-        if len(key):
-            raise UCException()
-        if self.validator:
-            self.value = self.validator.check(value)
+    def set(self, value):
+        for vInst in self.validators:
+            if not vInst.check(value):
+                raise ValueError('TODO handle validator fail')
         self.value = value
 
     def export(self):

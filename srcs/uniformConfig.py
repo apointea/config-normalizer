@@ -1,6 +1,7 @@
 import yaml
 
 from .UCException import *
+from .UCConfig import *
 from .UCModel import *
 
 class uniformConfig:
@@ -10,15 +11,17 @@ class uniformConfig:
     FILL_POLICY_ADD      = 1
     FILL_POLICY_ERROR    = 2
 
-    def __init__(self, filePath):
-        self.model = UCModel(filePath)
+    def __init__(self, modelPath=False, configPath=False):
+        self.conf = UCConfig(configPath)
+        self.model = UCModel(modelPath, self.conf)
 
-    def joinModel(self, filePath):
-        md = UCModel(filePath)
+    def addModel(self, modelPath):
+        md = UCModel(modelPath, self.conf)
         for prop in md.data:
             if prop in self.model.data:
-                raise UCException("joinModel failed, duplicate field: '%s'" % prop)
+                raise UCException("addModel failed, duplicate field: '%s'" % prop)
         self.model.data.update(md.data)
+        return self
 
     def fillModel(self, filePath, type, policy=FILL_POLICY_IGNORE):
         pass # TODO
