@@ -4,13 +4,20 @@
 
 **Principe** :
 
-1. Load your configuration model(s) - *MECANISMS : include, pattern, validator, transformation, default values*
-2. Push it with various inputs (yaml, xlsx, json) - *MECANISMS : fit, fill*
+1. Load your configuration model(s)
+2. Push it with various inputs (yaml, xlsx, json)
 3. Export your model into an uniform configuration file (yaml)
 
 **Benefits** :
 
 It allows you to focus your application on the stuff it need to do not on the inputs it need to handle.
+
+**Mecanisms builtins**:
+
+* include - *cut your model into separate parts*
+* pattern - *repeat a model over an array*
+* validator - *assert value format*
+* transformation - *transform values bef/aft validate*
 
 ## Requirements
 
