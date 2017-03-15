@@ -1,14 +1,12 @@
 import re
-from .UCValidator import UCValidator
 
-class UCRegex(UCValidator):
+class UCRegex():
 
     def __init__(self, data):
-        self.extractStrProp(data, 'default')
-        self.extractStrProp(data, 'pattern')
-
+        if not "pattern" in data:
+            raise KeyError("validator 'Regex' no 'pattern' property")
+        self.pattern = data.get('pattern')
 
     def check(self, value):
         if not re.match(self.pattern, value):
-            raise ValueError("ERROR value `%s` doesn't look like the pattern." % value)
-        return value
+            raise AssertionError("validator 'Regex' reject '%s'" % str(value))

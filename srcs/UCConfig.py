@@ -9,8 +9,7 @@ class UCConfig(UCCommon):
 
     # VALIDATOR POLICY OPTIONS
     VALIDATOR_STRICT       = 1     # raise UCException if not match
-    VALIDATOR_INTERPET     = 2     # try interpret the value
-    VALIDATOR_WARNING      = 3     # accept but ouput a warning in stderr
+    VALIDATOR_WARNING      = 2     # accept but ouput a warning in stderr
 
     # CONFIG VALUES         #
 

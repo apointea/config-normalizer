@@ -1,4 +1,7 @@
+import sys
+
 from .UCException import *
+from .UCConfig import *
 from .validators.UCValidatorFactory import *
 
 class UCField:
@@ -24,32 +27,23 @@ class UCField:
                 except Exception as e:
                     raise UCException("in field '%s' - %s" % (self.field, str(e)))
 
-    def get(self, key):
-        if len(key):
-            raise UCException()
-        return self.value
+    def get(self): return self.value
 
     def set(self, value):
         for vInst in self.validators:
-            if not vInst.check(value):
-                raise ValueError('TODO handle validator fail')
+            self.__validate(vInst, value)
         self.value = value
+
+    def __validate(self, vInst, value):
+        try:
+            vInst.check(value)
+        except Exception as e:
+            p = self.conf.VALIDATOR_POLICY
+            msg = "in field '%s' - %s" % (self.field, str(e))
+            if p == UCConfig.VALIDATOR_STRICT:
+                raise UCException(msg)
+            elif p == UCConfig.VALIDATOR_WARNING:
+                sys.stderr.write(msg + "\n")
 
     def export(self):
         return (self.value)
-
-    def __initDict(self, data):
-        if 'validate' in data:
-            name = data['validate']
-            if name == 'email':
-                self.validator = UCEmail(data)
-            elif name == 'integer':
-                self.validator = UCInteger(data)
-            elif name == 'IPv4':
-                self.validator = UCIPv4(data)
-            elif name == 'regex':
-                self.validator = UCRegex(data)
-
-        # SET default value (use validator if set)
-        if 'default' in data:
-            self.set([], data['default'])

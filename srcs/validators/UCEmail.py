@@ -1,12 +1,12 @@
 import re
-from .UCValidator import UCValidator
 
-class UCEmail(UCValidator):
+class UCEmail():
+
+    pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
 
     def __init__(self, data):
-        self.extractStrProp(data, 'default')
+        pass
 
     def check(self, value):
-        if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", value):
-            raise ValueError("ERROR value `%s` doesn't look like an email pattern." % value)
-        return value
+        if not re.match(UCEmail.pattern, value):
+            raise AssertionError("validator 'Email' reject '%s'" % str(value))
