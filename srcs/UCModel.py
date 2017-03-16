@@ -19,17 +19,17 @@ class UCModel(UCCommon):
         self.data = {}
         for field in self.fileData:
             cnt = self.fileData[field]
-            if isinstance(cnt, dict) and cnt.get('command', False):
+            if isinstance(cnt, dict) and cnt.get('cmd', False):
                 self.data[field] = self.__commandRouter(cnt, field)
             else:
                 self.data[field] = UCField(cnt, field, self.conf)
 
     def __commandRouter(self, cnt, field):
-        if cnt['command'] == 'include':
+        if cnt['cmd'] == 'include':
             return self.__commandInclude(cnt, field)
-        elif cnt['command'] == 'pattern':
+        elif cnt['cmd'] == 'pattern':
             return self.__commandPattern(cnt, field)
-        raise UCException("unknown command: '%s'" % cnt['command'])
+        raise UCException("unknown command: '%s'" % cnt['cmd'])
 
     def __commandInclude(self, cnt, field):
         if cnt.get('path', False):

@@ -12,20 +12,17 @@ class UCField:
         self.validators = []
         if isinstance(specs, dict):
             self.__initValidators(specs)
-            self.set(specs.get("default", ""))
+            self.value = specs.get("default", None)
         else:
-            self.set(specs)
+            self.value = specs
 
-    vProperties = ["v", "validator", "validators"]
     def __initValidators(self, specs):
-        for prop in self.vProperties: # GET VALIDATOR SPECS
-            if prop in specs:
-                vSpecs = specs[prop]
-                try:
-                    vInsts = UCValidatorFactory.buildArray(vSpecs)
-                    self.validators += vInsts
-                except Exception as e:
-                    raise UCException("in field '%s' - %s" % (self.field, str(e)))
+        if "validator" in specs:
+            try:
+                vInsts = UCValidatorFactory.buildArray(specs["validator"])
+                self.validators += vInsts
+            except Exception as e:
+                raise UCException("in field '%s' - %s" % (self.field, str(e)))
 
     def get(self): return self.value
 

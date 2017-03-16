@@ -1,0 +1,11 @@
+##########################################
+##  Demonstration :                     ##
+##    Includes, Patterns                ##
+##########################################
+
+# Fields & Validator demo
+personnal: { cmd: 'include', path: 'modules/personnal' }
+# Transformation demo
+location: { cmd: include, path: modules/location }
+
+#hobbies: { cmd: pattern, path: modules/hobbie }

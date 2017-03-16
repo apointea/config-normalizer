@@ -35,8 +35,11 @@ class uniformConfig:
     def set(self, key, value):
         self.model.set(self.__parseKey(key), value)
 
+    def export(self):
+        data = self.model.export()
+        return yaml.dump(data, default_flow_style=False)
 
-    def export(self, filePath):
-        stream = open(filePath, 'w')
-        res = self.model.export()
-        yaml.dump(res, stream, default_flow_style=False)
+    def exportFile(self, filePath):
+        data = self.model.export()
+        fd = open(filePath, 'w')
+        yaml.dump(data, fd, default_flow_style=False)

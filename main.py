@@ -17,7 +17,7 @@ def parseArguments():
     parser = OptionParser(usage=usage)
     parser.add_option(
         '-m', '--model', metavar = 'NAME',
-        action = 'store', dest = 'model', default = 'example/layout.yml',
+        action = 'store', dest = 'model',
         help = 'Set the configuration model to use (default: layout.yml)',
     )
     parser.add_option(
@@ -30,6 +30,11 @@ def parseArguments():
         action = 'store', dest = 'output', default = 'out.yml',
         help = 'Set the output file name, if no input-file, it produce the nominal prototype of the model (default: out.yml)',
     )
+    parser.add_option(
+        '--example', metavar = 'EXAMPLE',
+        action = 'store_true', dest = 'example', default = False,
+        help = 'run included example'
+    )
     (options, args) = parser.parse_args()
     if not options.output:
         parser.error("option -o (output-file) is required")
@@ -40,13 +45,20 @@ def main():
 
     opts, args = parseArguments()
 
-    # INIT                      #
-    UC = uniformConfig(opts.model)
+    if opts.example:
+        example()
+    else:
+        pass
 
-    UC.addModel('example/addon')
+def example():
+    # Create an UC instance directly with a model path
+    UC = uniformConfig("example/myModel/layout")
+    # Concatenate another model
+    UC.addModel('example/myModel/addon')
+    # Export result as string
+    print(UC.export())
 
-    # EXPORT                    #
-    UC.export(opts.output)
+
 
 if (__name__ == '__main__'):
     main()
