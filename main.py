@@ -35,6 +35,11 @@ def parseArguments():
         action = 'store_true', dest = 'example', default = False,
         help = 'run included example'
     )
+    parser.add_option(
+        '--interactive', metavar = 'INTERACTIVE',
+        action = 'store_true', dest = 'interactive', default = False,
+        help = 'run model in interactive mode'
+    )
     (options, args) = parser.parse_args()
     if not options.output:
         parser.error("option -o (output-file) is required")
@@ -47,6 +52,8 @@ def main():
 
     if opts.example:
         example()
+    elif opts.interactive:
+        interactive()
     else:
         pass
 
@@ -60,7 +67,23 @@ def example():
     # Export result as string
     print(UC.export())
 
-
+def interactive():
+    UC = uniformConfig("example/myModel/layout.yml")
+    UC.addModel('example/myModel/addon.yml')
+    cond = True
+    while(cond):
+        print('> ', end='', flush=True)
+        cmd = sys.stdin.readline().strip().split(' ')
+        if cmd[0] == 'export':
+            print(UC.export())
+        elif cmd[0] == 'get':
+            print(UC.get(cmd[1]))
+        elif cmd[0] == 'set':
+            UC.set(cmd[1], cmd[2])
+        elif cmd[0] == 'has':
+            UC.has(cmd[1])
+        elif cmd[0] == 'quit':
+            exit(0)
 
 if (__name__ == '__main__'):
     main()
