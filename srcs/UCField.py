@@ -2,19 +2,20 @@ import sys
 
 from .UCException import *
 from .UCConfig import *
-from .validators.UCValidatorFactory import *
+from .validators.UCVFactory import *
+from .validators.UCVException import *
 
 class UCField:
 
-    def __init__(self, specs, field, conf):
-        self.field = field
-        self.conf = conf
+    def __init__(self, name, specs):
+        self.name = name
         self.validators = []
         if isinstance(specs, dict):
             self.__initValidators(specs)
             self.value = specs.get("default", None)
         else:
             self.value = specs
+        self.default = self.value
 
     def __initValidators(self, specs):
         if "validator" in specs:
@@ -22,7 +23,7 @@ class UCField:
                 vInsts = UCValidatorFactory.buildArray(specs["validator"])
                 self.validators += vInsts
             except Exception as e:
-                raise UCException("in field '%s' - %s" % (self.field, str(e)))
+                raise UCException("in field - %s" % str(e))
 
     def get(self): return self.value
 

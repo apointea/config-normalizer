@@ -1,0 +1,2 @@
+class UCVException(Exception):
+    pass

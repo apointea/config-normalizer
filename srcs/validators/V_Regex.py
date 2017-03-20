@@ -1,6 +1,8 @@
 import re
 
-class UCRegex():
+from .UCVException import *
+
+class V_Regex():
 
     def __init__(self, data):
         if not "pattern" in data:
@@ -9,4 +11,4 @@ class UCRegex():
 
     def check(self, value):
         if not re.match(self.pattern, value):
-            raise AssertionError("validator 'Regex' reject '%s'" % str(value))
+            raise UCVException("validator 'Regex' reject '%s'" % str(value))

@@ -52,9 +52,11 @@ def main():
 
 def example():
     # Create an UC instance directly with a model path
-    UC = uniformConfig("example/myModel/layout")
+    UC = uniformConfig("example/myModel/layout.yml")
     # Concatenate another model
-    UC.addModel('example/myModel/addon')
+    UC.addModel('example/myModel/addon.yml')
+    # Fill the model with an yml input
+    UC.fill('example/myInputs/data.yml')
     # Export result as string
     print(UC.export())
 

@@ -13,27 +13,46 @@ class uniformConfig:
 
     def __init__(self, modelPath=False, configPath=False):
         self.conf = UCConfig(configPath)
-        self.model = UCModel(modelPath, self.conf)
+        self.model = UCModel(modelPath)
 
     def addModel(self, modelPath):
-        md = UCModel(modelPath, self.conf)
+        md = UCModel(modelPath)
         for prop in md.data:
             if prop in self.model.data:
                 raise UCException("addModel failed, duplicate field: '%s'" % prop)
         self.model.data.update(md.data)
         return self
 
-    def fillModel(self, filePath, type, policy=FILL_POLICY_IGNORE):
-        pass # TODO
+    def fill(self, dataPath):
+        if dataPath.endswith('.yml'):
+            return self.fillYaml(dataPath)
+        raise UCException("unknown format file : '%s'" % dataPath) # TODO better error there
+
+    def fillYaml(self, dataPath):
+        iData = yaml.load(open(dataPath, 'r'))
+        return self.setRecursive(iData)
 
     def __parseKey(self, key):
-        return (key.replace('/', '.').replace('-', '.').split('.'))
+        if len(key) and key[0] == '.':
+            key = key[1:]
+        key = key.replace('/', '.').replace('-', '.')
+        keys = key.split('.')
+        return ([x for x in keys if x != ''])
 
     def get(self, key):
         return self.model.get(self.__parseKey(key))
 
     def set(self, key, value):
         self.model.set(self.__parseKey(key), value)
+
+    def setRecursive(self, iData, key=""):
+        try:
+            self.set(key, iData)
+        except: # TODO HANDLE ERRORS
+            print('error')
+        if isinstance(iData, dict):
+            for prop in iData:
+                self.setRecursive(iData[prop], key + "." + prop)
 
     def export(self):
         data = self.model.export()

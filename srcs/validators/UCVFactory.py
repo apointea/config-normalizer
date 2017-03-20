@@ -1,17 +1,17 @@
-from .UCAlnum import *
-from .UCEmail import *
-from .UCInteger import *
-from .UCIPv4 import *
-from .UCRegex import *
+from .V_Alnum       import *
+from .V_Email       import *
+from .V_IP          import *
+from .V_Number      import *
+from .V_Regex       import *
 
 class UCValidatorFactory:
 
     validatorClasses = {
-        "alnum": UCAlnum,
-        "email": UCEmail,
-        "integer": UCInteger,
-        "ipv4": UCIPv4,
-        "regex": UCRegex
+        "alnum":        V_Alnum,
+        "email":        V_Email,
+        "integer":      V_Integer,
+        "ipv4":         V_IPv4,
+        "regex":        V_Regex
     }
 
     @staticmethod

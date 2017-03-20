@@ -5,20 +5,24 @@ from .UCCommon import *
 
 class UCConfig(UCCommon):
 
-    # STATIC VALUES         #
+    # FILL POLICY OPTIONS
+    FILL_IGNORE             = 1     # ignore if too much data
+    FILL_WARNING            = 2     # accept but output a warnign in stderr
+    FILL_STRICT             = 3     # raise UCException if too much data
 
     # VALIDATOR POLICY OPTIONS
-    VALIDATOR_STRICT       = 1     # raise UCException if not match
-    VALIDATOR_WARNING      = 2     # accept but ouput a warning in stderr
+    VALIDATOR_IGNORE        = 1     # ignore errors
+    VALIDATOR_WARNING       = 2     # accept but ouput a warning in stderr
+    VALIDATOR_STRICT        = 3     # raise UCException if not match
 
-    # CONFIG VALUES         #
-
-    # VALIDATOR INSTANCE VALUE
-    VALIDATOR_POLICY = VALIDATOR_STRICT
+    FILL_POLICY             = FILL_WARNING
+    VALIDATOR_POLICY        = VALIDATOR_STRICT
 
     CONFIG_PROPERTIES = [
+        "FILL_POLICY",
         "VALIDATOR_POLICY"
     ]
+
     def __init__(self, filePath=False):
         self.filePath = False
         if filePath:

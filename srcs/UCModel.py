@@ -8,9 +8,8 @@ from .UCPattern import *
 
 class UCModel(UCCommon):
 
-    def __init__(self, filePath, conf):
-        self.conf = conf
-        self.filePath = self.openYaml(filePath)
+    def __init__(self, modelPath):
+        self.filePath = modelPath
         self.dirName = os.path.dirname(self.filePath)
         self.fileData = yaml.load(open(self.filePath, 'r'))
         self.__build()
@@ -22,7 +21,7 @@ class UCModel(UCCommon):
             if isinstance(cnt, dict) and cnt.get('cmd', False):
                 self.data[field] = self.__commandRouter(cnt, field)
             else:
-                self.data[field] = UCField(cnt, field, self.conf)
+                self.data[field] = UCField(field, cnt)
 
     def __commandRouter(self, cnt, field):
         if cnt['cmd'] == 'include':
@@ -33,14 +32,14 @@ class UCModel(UCCommon):
 
     def __commandInclude(self, cnt, field):
         if cnt.get('path', False):
-            fpath = os.path.join(self.dirName, cnt['path'])
-            return UCModel(fpath, self.conf)
+            modelPath = os.path.join(self.dirName, cnt['path'])
+            return UCModel(modelPath)
         raise UCException("include, path param. not found : '%s'" % field)
 
     def __commandPattern(self, cnt, field):
         if cnt.get('path', False):
-            fpath = os.path.join(self.dirName, cnt['path'])
-            return UCPattern(fpath, self.conf)
+            patternPath = os.path.join(self.dirName, cnt['path'])
+            return UCPattern(patternPath)
         raise UCException("pattern, path param. not found : '%s'" % field)
 
     def get(self, key):
@@ -50,8 +49,17 @@ class UCModel(UCCommon):
 
     def set(self, key, value):
         if not len(key):
-            raise UCException()
-        self.data[key[0]].set(key[1:], value)
+            raise UCException("invalid path '%s'" % key)
+        prop = key[0]
+        key = key[1:]
+        if not prop in self.data:
+            raise UCException("fill, prop not found '%s'" % prop)
+        if isinstance(self.data[prop], UCField):
+            self.data[prop].set(value)
+        elif isinstance(self.data[prop], UCModel):
+            self.data[prop].set(key, value)
+        else:
+            raise UCException('non implemented')
 
     def export(self):
         res = {}
