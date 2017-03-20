@@ -3,13 +3,10 @@ import yaml
 from .UCException import *
 from .UCConfig import *
 from .UCModel import *
+from .validators import *
+from .UCChain import *
 
 class uniformConfig:
-
-    # Policy when fill if the key is not found
-    FILL_POLICY_IGNORE   = 0
-    FILL_POLICY_ADD      = 1
-    FILL_POLICY_ERROR    = 2
 
     def __init__(self, modelPath=False, configPath=False):
         self.conf = UCConfig(configPath)
@@ -29,30 +26,27 @@ class uniformConfig:
         raise UCException("unknown format file : '%s'" % dataPath) # TODO better error there
 
     def fillYaml(self, dataPath):
-        iData = yaml.load(open(dataPath, 'r'))
-        return self.setRecursive(iData)
+        loadData = yaml.load(open(dataPath, 'r'))
+        return self.setRecursive(loadData)
 
-    def __parseKey(self, key):
-        if len(key) and key[0] == '.':
-            key = key[1:]
-        key = key.replace('/', '.').replace('-', '.')
-        keys = key.split('.')
-        return ([x for x in keys if x != ''])
+    def has(self, key):
+        chain = self.__toChain(key)
+        return self.model.has(chain)
 
     def get(self, key):
-        return self.model.get(self.__parseKey(key))
+        chain = self.__toChain(key)
+        return self.model.get(chain)
 
     def set(self, key, value):
-        self.model.set(self.__parseKey(key), value)
+        chain = self.__toChain(key)
+        self.model.set(chain, value)
 
-    def setRecursive(self, iData, key=""):
-        try:
-            self.set(key, iData)
-        except: # TODO HANDLE ERRORS
-            print('error')
-        if isinstance(iData, dict):
-            for prop in iData:
-                self.setRecursive(iData[prop], key + "." + prop)
+    def setRecursive(self, values, chain=UCChain('')):
+        if isinstance(values, dict):
+            for prop in values:
+                self.setRecursive(values[prop], chain.add(prop))
+        else:
+            self.set(chain, values)
 
     def export(self):
         data = self.model.export()
@@ -62,3 +56,8 @@ class uniformConfig:
         data = self.model.export()
         fd = open(filePath, 'w')
         yaml.dump(data, fd, default_flow_style=False)
+
+    def __toChain(self, key):
+        if not isinstance(key, UCChain):
+            return UCChain(key)
+        return key

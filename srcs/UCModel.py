@@ -1,10 +1,12 @@
 import os
 import yaml
+import copy
 
 from .UCException import *
 from .UCCommon import *
 from .UCField import *
 from .UCPattern import *
+from .UCChain import *
 
 class UCModel(UCCommon):
 
@@ -12,7 +14,39 @@ class UCModel(UCCommon):
         self.filePath = modelPath
         self.dirName = os.path.dirname(self.filePath)
         self.fileData = yaml.load(open(self.filePath, 'r'))
+        self.data = {}
         self.__build()
+
+    def has(self, chain):
+        if not chain.current() in self.data:
+            return False
+        return True
+
+    def get(self, chain):
+        if not self.has(chain):
+            raise UCException("property '%s' not found in '%s'" % (chain.current(), chain.trace()))
+        elem = self.data[chain.current()]
+        if isinstance(elem, UCModel):
+            return elem.get(copy.copy(chain).next())
+        else:
+            return elem.get()
+
+    def set(self, chain, value):
+        if not self.has(chain):
+            raise UCException("property '%s' not found in '%s'" % (chain.current(), chain.trace()))
+        elem = self.data[chain.current()]
+        if isinstance(elem, UCModel):
+            return elem.set(copy.copy(chain).next(), value)
+        else:
+            return elem.set(value)
+
+    def export(self):
+        res = {}
+        for prop in self.data:
+            res[prop] = self.data[prop].export()
+        return res
+
+    # --- INTERNAL METHODS --- #
 
     def __build(self):
         self.data = {}
@@ -41,28 +75,3 @@ class UCModel(UCCommon):
             patternPath = os.path.join(self.dirName, cnt['path'])
             return UCPattern(patternPath)
         raise UCException("pattern, path param. not found : '%s'" % field)
-
-    def get(self, key):
-        if not len(key):
-            raise UCException()
-        return self.data[key[0]].get(key[1:])
-
-    def set(self, key, value):
-        if not len(key):
-            raise UCException("invalid path '%s'" % key)
-        prop = key[0]
-        key = key[1:]
-        if not prop in self.data:
-            raise UCException("fill, prop not found '%s'" % prop)
-        if isinstance(self.data[prop], UCField):
-            self.data[prop].set(value)
-        elif isinstance(self.data[prop], UCModel):
-            self.data[prop].set(key, value)
-        else:
-            raise UCException('non implemented')
-
-    def export(self):
-        res = {}
-        for prop in self.data:
-            res[prop] = self.data[prop].export()
-        return res

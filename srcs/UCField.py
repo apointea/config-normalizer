@@ -1,9 +1,8 @@
 import sys
 
 from .UCException import *
-from .UCConfig import *
-from .validators.UCVFactory import *
-from .validators.UCVException import *
+from .validators import *
+
 
 class UCField:
 

@@ -9,7 +9,6 @@ firstName: { default: null }            # explicit default value
 lastName: null                          # implicit default value
 fullName:                               # implicit default value
 # (Note : these three fields are fully equivalent)
-# (Note2 : default values of type 'dict', cannot be implicit, obviously)
 
 
 # --- Validator simple usage --- #
@@ -32,7 +31,7 @@ phone:
         v: regex
         pattern: '([0-9]{2}[\. ]?){4}[0-9]{2}'
 # (Note : that is a native yaml syntax for dict)
-# (Note2 : the validator 'phone' already exist)
+# (Note2 : the validator 'phone' exist)
 
 
 # --- Combine two (or more) validators --- #
