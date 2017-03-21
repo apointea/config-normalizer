@@ -27,4 +27,8 @@ It allows you to focus your application on the stuff it need to do not on the in
 
 ## Quick Start
 
-`./main.py -o out.xml`
+To start, I recommend you to launch the example into the interactive mode:
+
+`./uniform-config.py --example --interactive`
+
+Then type `help` to see the available commands (tips: `extract` is well to see a preview)
