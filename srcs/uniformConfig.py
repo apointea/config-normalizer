@@ -1,3 +1,4 @@
+import sys
 import yaml
 
 from .UCException import *
@@ -39,7 +40,16 @@ class uniformConfig:
 
     def set(self, key, value):
         chain = self.__toChain(key)
-        self.model.set(chain, value)
+        try:
+            self.model.set(chain, value)
+        except UCVException as e:
+            msg = "in field '%s', %s" % (chain.trace(), str(e))
+            if self.conf.VALIDATOR_POLICY == UCConfig.POLICY_STRICT:
+                raise UCException(msg)
+            elif self.conf.VALIDATOR_POLICY == UCConfig.POLICY_WARNING:
+                sys.stderr.write("Error: Uniform Config - %s" % msg)
+        except UCExeption as e:
+                raise UCExeption("in field '%s', %s" % (chain.trace(), str(e)))
 
     def setRecursive(self, values, chain=UCChain('')):
         if isinstance(values, dict):
@@ -47,6 +57,7 @@ class uniformConfig:
                 self.setRecursive(values[prop], chain.add(prop))
         else:
             self.set(chain, values)
+
 
     def export(self):
         data = self.model.export()

@@ -5,18 +5,12 @@ from .UCCommon import *
 
 class UCConfig(UCCommon):
 
-    # FILL POLICY OPTIONS
-    FILL_IGNORE             = 1     # ignore if too much data
-    FILL_WARNING            = 2     # accept but output a warnign in stderr
-    FILL_STRICT             = 3     # raise UCException if too much data
+    POLICY_IGNORE             = 1
+    POLICY_WARNING            = 2
+    POLICY_STRICT             = 4
 
-    # VALIDATOR POLICY OPTIONS
-    VALIDATOR_IGNORE        = 1     # ignore errors
-    VALIDATOR_WARNING       = 2     # accept but ouput a warning in stderr
-    VALIDATOR_STRICT        = 3     # raise UCException if not match
-
-    FILL_POLICY             = FILL_WARNING
-    VALIDATOR_POLICY        = VALIDATOR_STRICT
+    FILL_POLICY             = POLICY_IGNORE
+    VALIDATOR_POLICY        = POLICY_STRICT
 
     CONFIG_PROPERTIES = [
         "FILL_POLICY",
