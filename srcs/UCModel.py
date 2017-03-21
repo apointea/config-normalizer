@@ -40,10 +40,10 @@ class UCModel(UCCommon):
         else:
             return elem.set(value)
 
-    def export(self):
+    def extract(self):
         res = {}
         for prop in self.data:
-            res[prop] = self.data[prop].export()
+            res[prop] = self.data[prop].extract()
         return res
 
     # --- INTERNAL METHODS --- #

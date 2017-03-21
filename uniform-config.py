@@ -1,11 +1,11 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 import os
 import sys
 from optparse import OptionParser
 
 from srcs.uniformConfig import *
-
+from sbin import *
 
 def parseArguments():
     scriptDir = os.path.dirname(os.path.realpath(__file__))
@@ -49,41 +49,15 @@ def parseArguments():
 def main():
 
     opts, args = parseArguments()
+    UC = False
 
     if opts.example:
-        example()
-    elif opts.interactive:
-        interactive()
+        UC = uniformConfig("example/myModel/layout.yml")
+    if opts.interactive:
+        i = Interactive(UC)
+        i.loop()
     else:
         pass
-
-def example():
-    # Create an UC instance directly with a model path
-    UC = uniformConfig("example/myModel/layout.yml")
-    # Concatenate another model
-    UC.addModel('example/myModel/addon.yml')
-    # Fill the model with an yml input
-    UC.fill('example/myInputs/data.yml')
-    # Export result as string
-    print(UC.export())
-
-def interactive():
-    UC = uniformConfig("example/myModel/layout.yml")
-    UC.addModel('example/myModel/addon.yml')
-    cond = True
-    while(cond):
-        print('> ', end='', flush=True)
-        cmd = sys.stdin.readline().strip().split(' ')
-        if cmd[0] == 'export':
-            print(UC.export())
-        elif cmd[0] == 'get':
-            print(UC.get(cmd[1]))
-        elif cmd[0] == 'set':
-            UC.set(cmd[1], cmd[2])
-        elif cmd[0] == 'has':
-            UC.has(cmd[1])
-        elif cmd[0] == 'quit':
-            exit(0)
 
 if (__name__ == '__main__'):
     main()

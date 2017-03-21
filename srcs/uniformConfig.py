@@ -9,7 +9,7 @@ from .UCChain import *
 
 class uniformConfig:
 
-    def __init__(self, modelPath=False, configPath=False):
+    def __init__(self, modelPath, configPath=False):
         self.conf = UCConfig(configPath)
         self.model = UCModel(modelPath)
 
@@ -59,12 +59,12 @@ class uniformConfig:
             self.set(chain, values)
 
 
-    def export(self):
-        data = self.model.export()
+    def extract(self):
+        data = self.model.extract()
         return yaml.dump(data, default_flow_style=False)
 
-    def exportFile(self, filePath):
-        data = self.model.export()
+    def export(self, filePath):
+        data = self.model.extract()
         fd = open(filePath, 'w')
         yaml.dump(data, fd, default_flow_style=False)
 

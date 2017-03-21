@@ -42,5 +42,5 @@ class UCField:
             elif p == UCConfig.VALIDATOR_WARNING:
                 sys.stderr.write(msg + "\n")
 
-    def export(self):
+    def extract(self):
         return (self.value)
