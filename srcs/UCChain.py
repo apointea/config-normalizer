@@ -27,7 +27,7 @@ class UCChain:
     def trace(self):
         res = ""
         i = 0
-        while i < self.cursor or i < len(self.path):
+        while i < len(self.path):
             if i > 0: res += '.'
             res += self.path[i]
             i += 1

@@ -2,8 +2,10 @@ import sys
 import yaml
 
 from .UCException import *
+
 from .UCConfig import *
 from .UCModel import *
+
 from .validators import *
 from .UCChain import *
 
@@ -43,13 +45,13 @@ class uniformConfig:
         try:
             self.model.set(chain, value)
         except UCVException as e:
-            msg = "in field '%s', %s" % (chain.trace(), str(e))
+            msg = "in '%s', %s" % (chain.trace(), str(e))
             if self.conf.VALIDATOR_POLICY == UCConfig.POLICY_STRICT:
                 raise UCException(msg)
             elif self.conf.VALIDATOR_POLICY == UCConfig.POLICY_WARNING:
                 sys.stderr.write("Error: Uniform Config - %s" % msg)
-        except UCExeption as e:
-                raise UCExeption("in field '%s', %s" % (chain.trace(), str(e)))
+        except UCException as e:
+            raise UCException("in '%s', %s" % (chain.trace(), str(e)))
 
     def setRecursive(self, values, chain=UCChain('')):
         if isinstance(values, dict):

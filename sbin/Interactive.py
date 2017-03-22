@@ -1,5 +1,7 @@
 import sys
 
+from srcs import *
+
 class Interactive:
 
     def __init__(self, UC):
@@ -47,4 +49,7 @@ class Interactive:
         if len(cmd) != 3:
             print('usage: set <property> <value>')
         else:
-            self.UC.set(cmd[1], cmd[2])
+            try:
+                self.UC.set(cmd[1], cmd[2])
+            except Exception as e:
+                print("error: %s" % str(e))

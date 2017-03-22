@@ -24,7 +24,7 @@ class UCModel(UCCommon):
 
     def get(self, chain):
         if not self.has(chain):
-            raise UCException("property '%s' not found in '%s'" % (chain.current(), chain.trace()))
+            raise UCException("property '%s' not found" % (chain.current(), chain.trace()))
         elem = self.data[chain.current()]
         if isinstance(elem, UCModel):
             return elem.get(copy.copy(chain).next())
@@ -33,7 +33,7 @@ class UCModel(UCCommon):
 
     def set(self, chain, value):
         if not self.has(chain):
-            raise UCException("property '%s' not found in '%s'" % (chain.current(), chain.trace()))
+            raise UCException("property '%s' not found" % (chain.current()))
         elem = self.data[chain.current()]
         if isinstance(elem, UCModel):
             return elem.set(copy.copy(chain).next(), value)

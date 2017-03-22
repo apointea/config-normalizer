@@ -22,20 +22,6 @@ class UCConfig(UCCommon):
         if filePath:
             self.loadFromFile(filePath)
 
-    def has(self, key):
-        return key in UCConfig.CONFIG_PROPERTIES
-
-    def set(self, key, value):
-        if self.has(key):
-            setattr(self, key, value)
-        else:
-            raise UCException("configuration property not found : '%s'" % key)
-
-    def get(self, key):
-        if self.has(key):
-            return getattr(self, key)
-        raise UCException("configuration property not found : '%s'" % key)
-
     def loadFromFile(self, filePath):
         filePath = self.openYaml(filePath)
         data = yaml.load(open(self.filePath), 'r')

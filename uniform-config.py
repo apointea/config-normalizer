@@ -4,7 +4,7 @@ import os
 import sys
 from optparse import OptionParser
 
-from srcs.uniformConfig import *
+from srcs import *
 from sbin import *
 
 def parseArguments():
