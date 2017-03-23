@@ -4,8 +4,17 @@
 ##########################################
 
 # Fields & Validator demo
-personnal: { cmd: include, path: 'modules/personnal.yml' }
+personnal:
+    cmd: include
+    path: 'modules/personnal.yml'
 # Transformation demo
-location: { cmd: include, path: 'modules/location.yml' }
+location:
+    cmd: include
+    path: 'modules/location.yml'
 
-#hobbies: { cmd: pattern, path: modules/hobbie }
+lol: ['a', 'b', 'c']
+#hobbies:
+#    cmd: pattern
+#    data:
+#        cmd: include
+#        path: 'modules/hobbie.yml'

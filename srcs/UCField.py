@@ -4,10 +4,10 @@ from .UCException import *
 from .validators import *
 
 
-class UCField:
+class UCField(UCDataStructure):
 
-    def __init__(self, name, specs):
-        self.name = name
+    def __init__(self, fname, specs):
+        self.name = fname
         self.validators = []
         if isinstance(specs, dict):
             self.__initValidators(specs)

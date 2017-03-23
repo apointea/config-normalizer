@@ -3,12 +3,12 @@ import yaml
 import copy
 
 from .UCException import *
-from .UCCommon import *
+from .UCDataStructure import *
 from .UCField import *
 from .UCPattern import *
 from .UCChain import *
 
-class UCModel(UCCommon):
+class UCModel(UCDataStructure):
 
     def __init__(self, modelPath):
         self.filePath = modelPath
@@ -50,28 +50,6 @@ class UCModel(UCCommon):
 
     def __build(self):
         self.data = {}
-        for field in self.fileData:
-            cnt = self.fileData[field]
-            if isinstance(cnt, dict) and cnt.get('cmd', False):
-                self.data[field] = self.__commandRouter(cnt, field)
-            else:
-                self.data[field] = UCField(field, cnt)
-
-    def __commandRouter(self, cnt, field):
-        if cnt['cmd'] == 'include':
-            return self.__commandInclude(cnt, field)
-        elif cnt['cmd'] == 'pattern':
-            return self.__commandPattern(cnt, field)
-        raise UCException("unknown command: '%s'" % cnt['cmd'])
-
-    def __commandInclude(self, cnt, field):
-        if cnt.get('path', False):
-            modelPath = os.path.join(self.dirName, cnt['path'])
-            return UCModel(modelPath)
-        raise UCException("include, path param. not found : '%s'" % field)
-
-    def __commandPattern(self, cnt, field):
-        if cnt.get('path', False):
-            patternPath = os.path.join(self.dirName, cnt['path'])
-            return UCPattern(patternPath)
-        raise UCException("pattern, path param. not found : '%s'" % field)
+        for fname in self.fileData:
+            cnt = self.fileData[fname]
+            self.data[fname] = __buildProp(fname, cnt)

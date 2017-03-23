@@ -1,9 +1,8 @@
 import yaml
 
 from .UCException import *
-from .UCCommon import *
 
-class UCConfig(UCCommon):
+class UCConfig:
 
     POLICY_IGNORE             = 1
     POLICY_WARNING            = 2

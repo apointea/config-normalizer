@@ -60,7 +60,6 @@ class uniformConfig:
         else:
             self.set(chain, values)
 
-
     def extract(self):
         data = self.model.extract()
         return yaml.dump(data, default_flow_style=False)
