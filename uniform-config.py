@@ -4,8 +4,8 @@ import os
 import sys
 from optparse import OptionParser
 
-from srcs import *
-from sbin import *
+import srcs as UC
+import sbin
 
 def parseArguments():
     scriptDir = os.path.dirname(os.path.realpath(__file__))
@@ -49,13 +49,13 @@ def parseArguments():
 def main():
 
     opts, args = parseArguments()
-    UC = False
+    ctx = False
 
     if opts.example:
-        UC = uniformConfig("example/myModel/layout.yml")
+        ctx = UC.uniformConfig("example/myModel/layout.yml")
+
     if opts.interactive:
-        i = Interactive(UC)
-        i.loop()
+        sbin.Interactive(ctx).loop()
     else:
         pass
 

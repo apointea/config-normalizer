@@ -26,4 +26,5 @@ class UCConfig(UCCommon):
         filePath = self.openYaml(filePath)
         data = yaml.load(open(self.filePath), 'r')
         for prop in data:
-            self.set(prop, data[prop])
+            if getattr(self, prop, False):
+                self.set(prop, data[prop])
