@@ -1,3 +1,10 @@
+# @Author: Antoine Pointeau <kalif>
+# @Date:   2017-03-23T01:43:02+01:00
+# @Email:  web.pointeau@gmail.com
+# @Filename: layout.yml
+# @Last modified by:   kalif
+# @Last modified time: 2017-03-27T02:26:24+02:00
+
 ##########################################
 ##  Demonstration :                     ##
 ##    Includes, Patterns                ##
@@ -12,7 +19,7 @@ location:
     cmd: include
     path: 'modules/location.yml'
 
-lol: ['a', 'b', 'c']
+#lol: ['a', 'b', 'c']
 #hobbies:
 #    cmd: pattern
 #    data:

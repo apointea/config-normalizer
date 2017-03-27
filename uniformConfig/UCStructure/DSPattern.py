@@ -1,11 +1,19 @@
+# @Author: Antoine Pointeau <kalif>
+# @Date:   2017-03-27T01:26:15+02:00
+# @Email:  web.pointeau@gmail.com
+# @Filename: UCSPattern.py
+# @Last modified by:   kalif
+# @Last modified time: 2017-03-27T01:52:39+02:00
+
 import os
 import yaml
 
-from .UCException import *
-from .UCCommon import *
-from .UCField import *
+from ..UCException import *
 
-class UCPattern(UCDataStructure):
+from .Interface import *
+from .Factory import *
+
+class DSPattern(Interface):
 
     def __init__(self, fname, data, dirName, specs={}):
         self.name = fname
@@ -16,7 +24,7 @@ class UCPattern(UCDataStructure):
         # TODO there
 
     def __buildDefault(self, data):
-
+        pass
 
     def has(self, chain):
         if not chain.current() in self.data:

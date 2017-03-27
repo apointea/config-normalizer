@@ -1,3 +1,10 @@
+# @Author: Antoine Pointeau <kalif>
+# @Date:   2017-03-22T01:24:08+01:00
+# @Email:  web.pointeau@gmail.com
+# @Filename: UCChain.py
+# @Last modified by:   kalif
+# @Last modified time: 2017-03-27T01:53:41+02:00
+
 from .UCException import *
 
 class UCChain:

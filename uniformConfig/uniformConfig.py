@@ -1,22 +1,30 @@
+# @Author: Antoine Pointeau <kalif>
+# @Date:   2017-03-27T01:19:54+02:00
+# @Email:  web.pointeau@gmail.com
+# @Filename: uniformConfig.py
+# @Last modified by:   kalif
+# @Last modified time: 2017-03-27T02:17:01+02:00
+
 import sys
 import yaml
 
 from .UCException import *
-
 from .UCConfig import *
-from .UCModel import *
-
-from .validators import *
 from .UCChain import *
+
+from .UCStructure import *
+from .UCValidators import *
 
 class uniformConfig:
 
     def __init__(self, modelPath, configPath=False):
-        self.conf = UCConfig(configPath)
-        self.model = UCModel(modelPath)
+        self.conf = UCConfig()
+        cnt = { "path": modelPath }
+        self.model = DSModel(self.conf, DSContext(), cnt)
 
     def addModel(self, modelPath):
-        md = UCModel(modelPath)
+        cnt = { "path": modelPath }
+        md = DSModel(self.conf, DSContext(), cnt)
         for prop in md.data:
             if prop in self.model.data:
                 raise UCException("addModel failed, duplicate field: '%s'" % prop)
@@ -52,6 +60,7 @@ class uniformConfig:
                 sys.stderr.write("Error: Uniform Config - %s" % msg)
         except UCException as e:
             raise UCException("in '%s', %s" % (chain.trace(), str(e)))
+        return self
 
     def setRecursive(self, values, chain=UCChain('')):
         if isinstance(values, dict):

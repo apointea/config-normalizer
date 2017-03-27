@@ -1,2 +1,0 @@
-class UCException(Exception):
-    pass
