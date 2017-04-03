@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCSFactory.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-04-03T23:11:42+02:00
+# @Last modified time: 2017-04-04T00:30:16+02:00
 
 import os
 
@@ -25,8 +25,8 @@ class Factory:
                 return Factory.__pattern(conf, ctx, cnt)
             else:
                 raise UCException("unknown command: '%s'" % cmd)
-        elif isinstance(cnt, list): # Implicit Pattern use cnt as 'data
-            return DSPattern(conf, ctx, {}, cnt)
+        elif isinstance(cnt, list): # Implicit Pattern use cnt as 'data'
+            return DSPattern(conf, ctx, { "data": cnt })
         else: # Implicit Field use cnt as 'default'
             return DSField(conf, ctx, cnt)
 
@@ -39,5 +39,5 @@ class Factory:
     @staticmethod
     def __pattern(conf, ctx, cnt):
         if cnt.get('data', False):
-            return DSPattern(conf, ctx, cnt, cnt.get('data'))
+            return DSPattern(conf, ctx, cnt)
         raise UCException("pattern, 'data' param. not found : '%s'" % ctx.fieldName)

@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCSModel.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-04-03T23:26:39+02:00
+# @Last modified time: 2017-04-04T00:50:08+02:00
 
 import os
 import yaml
@@ -19,15 +19,15 @@ class DSModel(Interface):
     def initDS(self, cnt):
         directory = os.path.dirname(self.ctx.path)
         self.file = os.path.join(directory, cnt['path'])
-        self.load = yaml.load(open(self.file, 'r'))
+        with open(self.file, 'r') as fd:
+            self.load = yaml.load(fd)
         if not self.load: self.load = {}
         self.ctx.path = self.file
         self.data = {}
         for prop in self.load:
             ctx = copy.copy(self.ctx)
             ctx.fieldName = prop
-            cnt = self.load[prop]
-            self.data[prop] = self.conf.factory.create(self.conf, ctx, cnt)
+            self.data[prop] = self.conf.factory.create(self.conf, ctx, self.load[prop])
 
     def has(self, chain):
         if not chain.current() in self.data:

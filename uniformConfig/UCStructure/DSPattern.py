@@ -3,28 +3,29 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCSPattern.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-04-03T23:11:42+02:00
-
-import os
-import yaml
+# @Last modified time: 2017-04-04T00:56:44+02:00
 
 from ..UCException import *
 
 from .Interface import *
-from .Factory import *
 
 class DSPattern(Interface):
 
-    def __init__(self, fname, data, dirName, specs={}):
-        self.name = fname
-        self.dirName = dirName
-        self.default = self.__buildProp(0, data)
-        self.min = specs.get('min', None)
-        self.max = specs.get('max', None)
-        # TODO there
+    def initDS(self, cnt):
+        self.data = []
+        if isinstance(cnt["data"], list):
+            self.min = len(cnt["data"])
+            self.max = len(cnt["data"])
+            self.default = self.conf.factory.create(self.conf, self.ctx, "")
+            for val in cnt["data"]:
+                obj = self.conf.factory.create(self.conf, self.ctx, val)
+                self.data.append(obj)
+        else:
+            self.min = int(cnt.get("min", -1))
+            self.max = int(cnt.get("max", -1))
+            self.default = self.conf.factory.create(self.conf, self.ctx, cnt["data"])
+            self.data = []
 
-    def __buildDefault(self, data):
-        pass
 
     def has(self, chain):
         if not chain.current() in self.data:
@@ -43,3 +44,9 @@ class DSPattern(Interface):
 
     def set(self, chain, value):
         pass # TODO
+
+    def extract(self): # TODO handle min max
+        res = []
+        for obj in self.data:
+            res.append(obj.extract())
+        return res

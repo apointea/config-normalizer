@@ -3,13 +3,12 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCSField.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-04-03T23:11:38+02:00
+# @Last modified time: 2017-04-04T00:51:36+02:00
 
 from ..UCException import *
 from ..UCValidators import *
 
 from .Interface import *
-from .Factory import *
 
 class DSField(Interface):
 

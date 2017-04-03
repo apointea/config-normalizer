@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: layout.yml
 # @Last modified by:   kalif
-# @Last modified time: 2017-04-03T23:02:05+02:00
+# @Last modified time: 2017-04-04T00:48:23+02:00
 
 ##########################################
 ##  Demonstration :                     ##
@@ -19,9 +19,18 @@ location:
     cmd: include
     path: 'modules/location.yml'
 
-#  lol: ['a', 'b', 'c']
-#hobbies:
-#    cmd: pattern
-#    data:
-#        cmd: include
-#        path: 'modules/hobbie.yml'
+lol: [
+    'a',
+    'b',
+    'c'
+]
+lol1:
+    cmd: pattern
+    data: [
+        'a', 'b', 'c'
+    ]
+hobbies:
+    cmd: pattern
+    data:
+        cmd: include
+        path: 'modules/hobbie.yml'

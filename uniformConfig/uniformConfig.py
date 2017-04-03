@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: uniformConfig.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-04-03T23:34:33+02:00
+# @Last modified time: 2017-04-04T00:54:05+02:00
 
 import sys
 import yaml
@@ -17,19 +17,16 @@ from .UCValidators import *
 
 class uniformConfig:
 
-    def __init__(self, modelPath=False, configPath=False):
+    def __init__(self, modelPath, configPath=False):
         self.conf = UCConfig()
-        self.context = DSContext()
-        self.model = False
-        if modelPath:
-            self.addModel(modelPath)
+        self.model = self.__buildModel(modelPath)
+
+    def __buildModel(self, modelPath):
+        cnt = { "cmd": "include", "path": modelPath }
+        return DSFactory.create(self.conf, DSContext(), cnt)
 
     def addModel(self, modelPath):
-        cnt = { "path": modelPath }
-        md = DSModel(self.conf, self.context, cnt)
-        if not self.model: # Set first modell
-            self.model = md
-            return self
+        md = self.__buildModel(modelPath)
         for prop in md.data: # Merge models
             if prop in self.model.data:
                 raise UCException("addModel failed, duplicate field: '%s'" % prop)
