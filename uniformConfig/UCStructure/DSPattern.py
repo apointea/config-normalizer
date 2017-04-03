@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCSPattern.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-03-27T01:52:39+02:00
+# @Last modified time: 2017-04-03T23:11:42+02:00
 
 import os
 import yaml

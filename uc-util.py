@@ -1,10 +1,17 @@
 #! /usr/bin/env python
 
+# @Author: Antoine Pointeau <kalif>
+# @Date:   2017-03-27T01:20:39+02:00
+# @Email:  web.pointeau@gmail.com
+# @Filename: uc-util.py
+# @Last modified by:   kalif
+# @Last modified time: 2017-04-03T23:17:24+02:00
+
 import os
 import sys
 from optparse import OptionParser
 
-import uniformConfig as UC
+import uniformConfig as uc
 import sbin
 
 def parseArguments():
@@ -22,7 +29,7 @@ def parseArguments():
     )
     parser.add_option(
         '-i', '--input-file', metavar = 'FILE',
-        action = 'append', dest = 'input',
+        action = 'append', dest = 'input', default = [],
         help = 'Add an input config file to merge with the model (multiple entries allowed)'
     )
     parser.add_option(
@@ -45,19 +52,20 @@ def parseArguments():
         parser.error("option -o (output-file) is required")
     return options, args
 
+def build(opts):
+    if opts.example:
+        return uc.uniformConfig("example/myModel/layout.yml")
+    UCUtil = uc.uniformConfig()
+    for path in opts.input:
+        UCUtil.addModel(path)
+    return UCUtil
 
 def main():
 
     opts, args = parseArguments()
-    ctx = False
-
-    if opts.example:
-        ctx = UC.uniformConfig("example/myModel/layout.yml")
-
+    UCUtil = build(opts)
     if opts.interactive:
-        sbin.Interactive(ctx).loop()
-    else:
-        pass
+        sbin.Interactive(UCUtil).loop()
 
 if (__name__ == '__main__'):
     main()

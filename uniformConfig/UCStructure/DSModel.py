@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCSModel.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-03-27T02:24:33+02:00
+# @Last modified time: 2017-04-03T23:26:39+02:00
 
 import os
 import yaml
@@ -20,6 +20,7 @@ class DSModel(Interface):
         directory = os.path.dirname(self.ctx.path)
         self.file = os.path.join(directory, cnt['path'])
         self.load = yaml.load(open(self.file, 'r'))
+        if not self.load: self.load = {}
         self.ctx.path = self.file
         self.data = {}
         for prop in self.load:

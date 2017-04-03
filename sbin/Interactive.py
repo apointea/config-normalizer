@@ -1,3 +1,10 @@
+# @Author: Antoine Pointeau <kalif>
+# @Date:   2017-03-23T01:37:14+01:00
+# @Email:  web.pointeau@gmail.com
+# @Filename: Interactive.py
+# @Last modified by:   kalif
+# @Last modified time: 2017-04-03T23:11:19+02:00
+
 import sys
 import re
 

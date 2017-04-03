@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: uniformConfig.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-03-27T02:17:01+02:00
+# @Last modified time: 2017-04-03T23:34:33+02:00
 
 import sys
 import yaml
@@ -17,15 +17,20 @@ from .UCValidators import *
 
 class uniformConfig:
 
-    def __init__(self, modelPath, configPath=False):
+    def __init__(self, modelPath=False, configPath=False):
         self.conf = UCConfig()
-        cnt = { "path": modelPath }
-        self.model = DSModel(self.conf, DSContext(), cnt)
+        self.context = DSContext()
+        self.model = False
+        if modelPath:
+            self.addModel(modelPath)
 
     def addModel(self, modelPath):
         cnt = { "path": modelPath }
-        md = DSModel(self.conf, DSContext(), cnt)
-        for prop in md.data:
+        md = DSModel(self.conf, self.context, cnt)
+        if not self.model: # Set first modell
+            self.model = md
+            return self
+        for prop in md.data: # Merge models
             if prop in self.model.data:
                 raise UCException("addModel failed, duplicate field: '%s'" % prop)
         self.model.data.update(md.data)
@@ -71,12 +76,14 @@ class uniformConfig:
 
     def extract(self):
         data = self.model.extract()
+        if not data:
+            return ""
         return yaml.dump(data, default_flow_style=False)
 
     def export(self, filePath):
-        data = self.model.extract()
-        fd = open(filePath, 'w')
-        yaml.dump(data, fd, default_flow_style=False)
+        ext = self.extract()
+        with open(filePath, 'w') as out:
+            out.write(ext)
 
     def __toChain(self, key):
         if not isinstance(key, UCChain):

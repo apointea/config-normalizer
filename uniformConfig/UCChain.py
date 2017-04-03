@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCChain.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-03-27T01:53:41+02:00
+# @Last modified time: 2017-04-03T23:11:29+02:00
 
 from .UCException import *
 

@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCSField.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-03-27T01:40:20+02:00
+# @Last modified time: 2017-04-03T23:11:38+02:00
 
 from ..UCException import *
 from ..UCValidators import *

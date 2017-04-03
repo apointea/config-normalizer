@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: UCException.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-03-27T01:29:40+02:00
+# @Last modified time: 2017-04-03T23:11:24+02:00
 
 class UCException(Exception):
     pass
